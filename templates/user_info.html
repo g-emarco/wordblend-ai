@@ -1,0 +1,16 @@
+<!-- template.html -->
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>User Info</title>
+  </head>
+  <body>
+    <div id="user-info">
+      <h2>User Information</h2>
+      <p>Name: {{ idinfo.name }}</p>
+      <p>Email: {{ idinfo.email }}</p>
+      <p>Profile Picture: <img src="{{ idinfo.picture }}" /></p>
+    </div>
+  <br/> <a href='/logout'><button>Logout</button></a>
+  </body>
+</html>
