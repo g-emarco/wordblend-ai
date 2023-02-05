@@ -11,6 +11,10 @@
       <p>Email: {{ idinfo.email }}</p>
       <p>Profile Picture: <img src="{{ idinfo.picture }}" /></p>
     </div>
+    <form action="/add_word" method="post">
+            <input type="text" name="text">
+            <input type="submit" value="Submit">
+    </form>
   <br/> <a href='/logout'><button>Logout</button></a>
   </body>
 </html>

@@ -19,6 +19,13 @@ client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret_oauth.json"
 )
 
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+cred = credentials.Certificate("client_secret_firebase_adminsdk.json")
+firebase_app = firebase_admin.initialize_app(cred)
+db = firestore.client(firebase_app)
+
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=[
@@ -45,6 +52,7 @@ def login_is_required(function):
 def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
+
     return redirect(authorization_url)
 
 
@@ -67,7 +75,26 @@ def callback():
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
     session["idinfo"] = id_info
-    return redirect("/protected_area")
+
+    user_info = session["idinfo"]
+
+    users_ref = db.collection("users")
+    query = users_ref.where("email", "==", user_info["email"]).get()
+    if query:
+        print("user exists, not writing in firestore")
+        return redirect("/profile")
+
+    doc_ref = db.collection("users").document(f'{user_info["email"]}')
+    doc_ref.set(
+        {
+            "given_name": f'{user_info["given_name"]}',
+            "family_name": f'{user_info["family_name"]}',
+            "email": f'{user_info["email"]}',
+            "picture": f'{user_info["picture"]}',
+        }
+    )
+
+    return redirect("/profile")
 
 
 @app.route("/logout")
@@ -81,30 +108,50 @@ def index():
     return "Hello World <a href='/login'><button>Login</button></a>"
 
 
-@app.route("/protected_area")
+@app.route("/profile")
 @login_is_required
-def protected_area():
+def profile():
     return render_template("user_info.html", idinfo=session["idinfo"])
 
 
 @app.route("/word", methods=["GET"])
 @login_is_required
 def word():
-    return '''
+    return """
         <form action="/add_word" method="post">
             <input type="text" name="text">
             <input type="submit" value="Submit">
         </form>
-    '''
+    """
 
 
 @app.route("/add_word", methods=["POST"])
 def add_word():
-
     # add what happens if no "idinfo"
     text = request.form["text"]
-    user_info = session['idinfo']
-    return f"{user_info['email']}: {text}"
+    user_info = session["idinfo"]
+
+    user_ref = db.collection("users").document(f'{user_info["email"]}')
+    words_ref = user_ref.collection("words")
+    words_ref.add({"word": f"{text}", "generated_picture_url": None})
+
+    return redirect("/profile")
+
+
+@app.route("/words")
+@login_is_required
+def words():
+    user_info = session["idinfo"]
+    email = user_info["email"]
+
+    user_ref = db.collection("users").document(email)
+    words_ref = user_ref.collection("words")
+    words = []
+    docs = words_ref.stream()
+    for doc in docs:
+        words.append(doc.to_dict()["word"])
+
+    return render_template("words.html", words=words)
 
 
 if __name__ == "__main__":
