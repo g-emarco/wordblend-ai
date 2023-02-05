@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ed2fa4ba66e2c3d8c182ff5047e2fc5cdc236a8f67bea990b952b34c6c60a0fa"
+            "sha256": "baed65e0e3397497a4b8f7bee162f28709e145bff1ccfe8805797ef5b383b0e4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -341,6 +341,14 @@
             "markers": "platform_python_implementation != 'PyPy'",
             "version": "==2.9.1"
         },
+        "google-cloud-pubsub": {
+            "hashes": [
+                "sha256:a035d63ef209a28edd54c8c1fcf66cc25b207ed6edb1259a973b909c723ecf80",
+                "sha256:e2714f07b750458beaf5b07b670ea7b6058ee155c021c987d0b8e6a40bf3446f"
+            ],
+            "index": "pypi",
+            "version": "==2.14.0"
+        },
         "google-cloud-storage": {
             "hashes": [
                 "sha256:1ac2d58d2d693cb1341ebc48659a3527be778d9e2d8989697a2746025928ff17",
@@ -439,6 +447,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==1.58.0"
         },
+        "grpc-google-iam-v1": {
+            "hashes": [
+                "sha256:2bc4b8fdf22115a65d751c9317329322602c39b7c86a289c9b72d228d960ef5f",
+                "sha256:5c10f3d8dc2d88678ab1a9b0cb5482735c5efee71e6c0cd59f872eef22913f5c"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==0.12.6"
+        },
         "grpcio": {
             "hashes": [
                 "sha256:094e64236253590d9d4075665c77b329d707b6fca864dd62b144255e199b4f87",
@@ -487,6 +503,7 @@
                 "sha256:f96ace1540223f26fbe7c4ebbf8a98e3929a6aa0290c8033d12526847b291c0f",
                 "sha256:fbdbe9a849854fe484c00823f45b7baab159bdd4a46075302281998cb8719df5"
             ],
+            "markers": "python_version >= '3.7'",
             "version": "==1.51.1"
         },
         "grpcio-status": {
@@ -494,6 +511,7 @@
                 "sha256:a52cbdc4b18f325bfc13d319ae7c7ae7a0fee07f3d9a005504d6097896d7a495",
                 "sha256:ac2617a3095935ebd785e2228958f24b10a0d527a0c9eb5a0863c784f648a816"
             ],
+            "markers": "python_version >= '3.6'",
             "version": "==1.51.1"
         },
         "httplib2": {

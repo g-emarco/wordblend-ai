@@ -9,6 +9,8 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
+from gcp.pubsub.producer import publish_word
+
 app = Flask("Google Login App")
 app.secret_key = os.environ["GOOGLE_OAUTH_CLIENT_SECRET"]
 
@@ -33,7 +35,7 @@ flow = Flow.from_client_secrets_file(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
-    redirect_uri="http://localhost/callback",
+    redirect_uri=f"http://{os.environ.get('BASE_URL')}/callback",
 )
 
 
@@ -134,6 +136,8 @@ def add_word():
     user_ref = db.collection("users").document(f'{user_info["email"]}')
     words_ref = user_ref.collection("words")
     words_ref.add({"word": f"{text}", "generated_picture_url": None})
+
+    publish_word(email=user_info["email"], word=text, word_document_id=words_ref.id)
 
     return redirect("/profile")
 

@@ -13,6 +13,7 @@ google-auth-httplib2 = "*"
 google-auth-oauthlib = "*"
 black = "*"
 firebase-admin = "*"
+google-cloud-pubsub = "*"
 
 [dev-packages]
 
