@@ -1,6 +1,5 @@
 from functools import wraps
 import os
-import pathlib
 import json
 import requests
 from flask import Flask, session, abort, redirect, request, render_template
@@ -10,23 +9,10 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
 from gcp_wrappers.producer import publish_word
-from settings import sa_credentials_for_clients
+from settings import sa_credentials_for_clients, GOOGLE_CLIENT_ID, db
 
 app = Flask("Google Login App")
 app.secret_key = os.environ["GOOGLE_OAUTH_CLIENT_SECRET"]
-
-
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
-client_secrets_file = os.path.join(
-    pathlib.Path(__file__).parent, "client_secret_oauth.json"
-)
-
-import firebase_admin
-from firebase_admin import credentials, firestore
-
-cred = credentials.Certificate("client_secret_firebase_adminsdk.json")
-firebase_app = firebase_admin.initialize_app(cred)
-db = firestore.client(firebase_app)
 
 
 oauth_client_key_config = json.loads(os.environ.get("OAUTH_CLIENT_KEY_CONFIG"))
@@ -85,7 +71,7 @@ def callback():
     users_ref = db.collection("users")
     query = users_ref.where("email", "==", user_info["email"]).get()
     if query:
-        print("user exists, not writing in firestore")
+        print(f"user {user_info['email']} exists, not writing in firestore")
         return redirect("/profile")
 
     doc_ref = db.collection("users").document(f'{user_info["email"]}')

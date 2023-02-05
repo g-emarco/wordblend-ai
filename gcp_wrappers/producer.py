@@ -9,7 +9,7 @@ TOPIC_NAME = "words"
 
 def publish_word(
     email: str, word: str, word_document_id: str, credentials: Credentials
-):
+) -> None:
     publisher = pubsub_v1.PublisherClient(credentials=credentials)
     topic_path = publisher.topic_path(os.environ.get("GCP_PROJECT"), TOPIC_NAME)
     print(f"{topic_path=}")
