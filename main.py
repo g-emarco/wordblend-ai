@@ -1,7 +1,7 @@
 from functools import wraps
 import os
 import pathlib
-
+import json
 import requests
 from flask import Flask, session, abort, redirect, request, render_template
 from google.oauth2 import id_token
@@ -9,12 +9,12 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
-from gcp.pubsub.producer import publish_word
+from gcp_wrappers.producer import publish_word
+from settings import sa_credentials_for_clients
 
 app = Flask("Google Login App")
 app.secret_key = os.environ["GOOGLE_OAUTH_CLIENT_SECRET"]
 
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
 client_secrets_file = os.path.join(
@@ -28,8 +28,10 @@ cred = credentials.Certificate("client_secret_firebase_adminsdk.json")
 firebase_app = firebase_admin.initialize_app(cred)
 db = firestore.client(firebase_app)
 
-flow = Flow.from_client_secrets_file(
-    client_secrets_file=client_secrets_file,
+
+oauth_client_key_config = json.loads(os.environ.get("OAUTH_CLIENT_KEY_CONFIG"))
+flow = Flow.from_client_config(
+    client_config=oauth_client_key_config,
     scopes=[
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
@@ -135,16 +137,21 @@ def add_word():
 
     user_ref = db.collection("users").document(f'{user_info["email"]}')
     words_ref = user_ref.collection("words")
-    words_ref.add({"word": f"{text}", "generated_picture_url": None})
+    added_word_ref = words_ref.add({"word": f"{text}", "generated_picture_url": None})
 
-    publish_word(email=user_info["email"], word=text, word_document_id=words_ref.id)
+    publish_word(
+        email=user_info["email"],
+        word=text,
+        word_document_id=added_word_ref[1].id,
+        credentials=sa_credentials_for_clients,
+    )
 
     return redirect("/profile")
 
 
 @app.route("/words")
 @login_is_required
-def words():
+def get_words():
     user_info = session["idinfo"]
     email = user_info["email"]
 

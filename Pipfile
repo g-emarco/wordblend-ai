@@ -14,6 +14,7 @@ google-auth-oauthlib = "*"
 black = "*"
 firebase-admin = "*"
 google-cloud-pubsub = "*"
+google-cloud-secret-manager = "*"
 
 [dev-packages]
 
