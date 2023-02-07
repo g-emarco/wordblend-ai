@@ -1,6 +1,8 @@
 import json
+import logging
 import os
 import pathlib
+from logging.config import dictConfig
 
 from google.oauth2.service_account import Credentials
 import firebase_admin
@@ -40,3 +42,24 @@ GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
 
 firebase_app = firebase_admin.initialize_app(firebase_credentials)
 db = firestore.client(firebase_app)
+
+
+# dictConfig(
+#     {
+#         "version": 1,
+#         "formatters": {
+#             "default": {
+#                 "format": "[%(asctime)s-%(levelname)s-%(name)s::%(module)s|%(lineno)s:: %(message)s",
+#             }
+#         },
+#         "handlers": {
+#             "console": {
+#                 "class": "logging.StreamHandler",
+#                 "stream": "ext://sys.stdout",
+#                 "formatter": "default",
+#             }
+#         },
+#         "root": {"level": "INFO", "handlers": ["console"]},
+#     }
+# )
+# logging.basicConfig(level=logging.DEBUG)
