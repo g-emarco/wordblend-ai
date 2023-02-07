@@ -9,13 +9,15 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 
 from gcp_wrappers.producer import publish_word
-from settings import sa_credentials_for_clients, GOOGLE_CLIENT_ID, db
+from settings import sa_credentials_for_clients, GOOGLE_OAUTH_CLIENT_ID, db
 
 app = Flask("Google Login App")
 app.secret_key = os.environ["GOOGLE_OAUTH_CLIENT_SECRET"]
 
 
-oauth_client_key_config = json.loads(os.environ.get("OAUTH_CLIENT_KEY_CONFIG"))
+oauth_client_key_config = json.loads(
+    os.environ.get("WORDBLEND_OAUTH_CLIENT_SECRET_JSON")
+)
 flow = Flow.from_client_config(
     client_config=oauth_client_key_config,
     scopes=[
@@ -23,7 +25,7 @@ flow = Flow.from_client_config(
         "https://www.googleapis.com/auth/userinfo.email",
         "openid",
     ],
-    redirect_uri=f"http://{os.environ.get('BASE_URL')}/callback",
+    redirect_uri=f"http{'s' if os.environ.get('PRODUCTION') else ''}://{os.environ.get('BASE_URL')}/callback",
 )
 
 
@@ -59,7 +61,9 @@ def callback():
     token_request = google.auth.transport.requests.Request(session=cached_session)
 
     id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token, request=token_request, audience=GOOGLE_CLIENT_ID
+        id_token=credentials._id_token,
+        request=token_request,
+        audience=GOOGLE_OAUTH_CLIENT_ID,
     )
 
     session["google_id"] = id_info.get("sub")
@@ -95,7 +99,7 @@ def logout():
 
 @app.route("/")
 def index():
-    return "Hello World <a href='/login'><button>Login</button></a>"
+    return "Wordblend Login <a href='/login'><button>Login</button></a>"
 
 
 @app.route("/profile")
