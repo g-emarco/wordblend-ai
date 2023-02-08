@@ -30,36 +30,16 @@ if os.environ.get("LOCAL"):
         "client_secret_firebase_adminsdk.json"
     )
 
-if os.environ.get("PRODUCTION"):
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
+TOPIC_NAME = "words"
+SUBSCRIPTION_ID = "words-sub"
+
+if os.environ.get("PRODUCTION") and os.environ.get("API"):
     sa_credentials_for_clients = json.loads(
         os.environ.get("WORDBLEND_SERVICE_ACCOUNT_KEY_JSON")
     )
 
     firebase_credentials = credentials.Certificate(sa_credentials_for_clients)
 
-GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
-
-
-firebase_app = firebase_admin.initialize_app(firebase_credentials)
-db = firestore.client(firebase_app)
-
-
-# dictConfig(
-#     {
-#         "version": 1,
-#         "formatters": {
-#             "default": {
-#                 "format": "[%(asctime)s-%(levelname)s-%(name)s::%(module)s|%(lineno)s:: %(message)s",
-#             }
-#         },
-#         "handlers": {
-#             "console": {
-#                 "class": "logging.StreamHandler",
-#                 "stream": "ext://sys.stdout",
-#                 "formatter": "default",
-#             }
-#         },
-#         "root": {"level": "INFO", "handlers": ["console"]},
-#     }
-# )
-# logging.basicConfig(level=logging.DEBUG)
+    firebase_app = firebase_admin.initialize_app(firebase_credentials)
+    db = firestore.client(firebase_app)
