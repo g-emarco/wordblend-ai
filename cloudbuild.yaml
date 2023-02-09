@@ -10,11 +10,18 @@ steps:
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
+  id: Deploy API
   args: ['run', 'deploy', $PROJECT_ID,
              --image=europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest,
              '--region=europe-west3', '--service-account=firebase-adminsdk-jfp0o@wordblend-ai.iam.gserviceaccount.com',
               '--allow-unauthenticated',
               '--set-env-vars=FLASK_APP=main.py,PRODUCTION=True,BASE_URL=wordblend-ai-zglzosebja-ey.a.run.app,GCP_PROJECT=wordblend-ai,API=true',
               '--set-secrets=WORDBLEND_OAUTH_CLIENT_SECRET_JSON=WORDBLEND_OAUTH_CLIENT_SECRET_JSON:latest,WORDBLEND_SERVICE_ACCOUNT_KEY_JSON=WORDBLEND_SERVICE_ACCOUNT_KEY_JSON:latest,GOOGLE_OAUTH_CLIENT_ID=GOOGLE_OAUTH_CLIENT_ID:latest,GOOGLE_OAUTH_CLIENT_SECRET=GOOGLE_OAUTH_CLIENT_SECRET:latest']
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: Deploy Cloud Job
+  entrypoint: gcloud
+  args: ['beta', 'run', 'jobs', 'replace', './worker/knative-deploymnet.yaml', '--region=europe-west3']
+
 images:
 - 'europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest'

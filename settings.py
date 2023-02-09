@@ -41,5 +41,6 @@ if os.environ.get("PRODUCTION") and os.environ.get("API"):
 
     firebase_credentials = credentials.Certificate(sa_credentials_for_clients)
 
+if os.environ.get("API"):
     firebase_app = firebase_admin.initialize_app(firebase_credentials)
     db = firestore.client(firebase_app)

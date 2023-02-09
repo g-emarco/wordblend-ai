@@ -1,0 +1,41 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: image-generator
+  labels:
+    cloud.googleapis.com/location: europe-west3
+  annotations:
+    run.googleapis.com/launch-stage: BETA
+spec:
+  template:
+    spec:
+      taskCount: 1
+      template:
+        spec:
+          containers:
+          - image: europe-west3-docker.pkg.dev/wordblend-ai/webapp/wordblend:latest
+            command:
+            - python3
+            args:
+            - worker/image_generator.py
+            env:
+            - name: PRODUCTION
+              value: 'true'
+            - name: PYTHONPATH
+              value: .
+            - name: WORKER
+              value: 'true'
+            - name: GCP_PROJECT
+              value: wordblend-ai
+            - name: IMAGE_GEN_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: '1'
+                  name: IMAGE_GEN_API_KEY
+            resources:
+              limits:
+                memory: 512Mi
+                cpu: 1000m
+          maxRetries: 0
+          timeoutSeconds: '600'
+          serviceAccountName: image-generator-consumer-sa@wordblend-ai.iam.gserviceaccount.com
