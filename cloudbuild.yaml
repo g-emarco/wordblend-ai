@@ -23,5 +23,11 @@ steps:
   entrypoint: gcloud
   args: ['beta', 'run', 'jobs', 'replace', './worker/knative-deploymnet.yaml', '--region=europe-west3']
 
+- name: "gcr.io/cloud-builders/gcloud"
+  id: Deploy Cloud FirestoreUpdater Cloud Function
+  args: ["functions", "deploy", "update-firestore-function", "--runtime", "python310", "--entry-point", "firestore_updater_cloud_function", "--trigger-bucket", "wordblend-ai-bucket", "--service-account", "update-firestore-function-sa@wordblend-ai.iam.gserviceaccount.com", "--region=europe-west3", "--source=./firestore_updater_cloud_function"]
+  env: ["PROJECT_ID=wordblend-ai"]
+
+
 images:
 - 'europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest'

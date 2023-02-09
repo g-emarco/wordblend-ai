@@ -34,16 +34,16 @@ def generate_picture(words: List["str"]) -> Tuple[Optional[str], str]:
     return response_text["data"][0]["url"], sentence
 
 
-def _create_metadata_for_storage_object(messages:List[Dict[str,str]]) -> Dict:
+def _create_metadata_for_storage_object(messages: List[Dict[str, str]]) -> Dict:
     emails = []
     doc_ids = []
     for message in messages:
-        email = message.get('email')
-        doc_id = message.get('word_document_id')
+        email = message.get("email")
+        doc_id = message.get("word_document_id")
         if email not in emails:
             emails.append(email)
             doc_ids.append(doc_id)
-    return {'emails': emails, 'doc_ids': doc_ids}
+    return {"emails": emails, "doc_ids": doc_ids}
 
 
 def main():
@@ -64,7 +64,7 @@ def main():
     upload_image_to_bucket(
         image_url=generated_picture_url,
         description=description,
-        bucket_object_meta_data=bucket_object_meta_data
+        bucket_object_meta_data=bucket_object_meta_data,
     )
 
 
