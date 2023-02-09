@@ -40,9 +40,8 @@ def _create_metadata_for_storage_object(messages: List[Dict[str, str]]) -> Dict:
     for message in messages:
         email = message.get("email")
         doc_id = message.get("word_document_id")
-        if email not in emails:
-            emails.append(email)
-            doc_ids.append(doc_id)
+        emails.append(email)
+        doc_ids.append(doc_id)
     return {"emails": emails, "doc_ids": doc_ids}
 
 

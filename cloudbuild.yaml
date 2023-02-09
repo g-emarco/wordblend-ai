@@ -25,7 +25,10 @@ steps:
 
 - name: "gcr.io/cloud-builders/gcloud"
   id: Deploy Cloud FirestoreUpdater Cloud Function
-  args: ["functions", "deploy", "update-firestore-function", "--runtime", "python310", "--entry-point", "firestore_updater_cloud_function", "--trigger-bucket", "wordblend-ai-bucket", "--service-account", "update-firestore-function-sa@wordblend-ai.iam.gserviceaccount.com", "--region=europe-west3", "--source=./firestore_updater_cloud_function"]
+  args: ["functions", "deploy", "update-firestore-function", "--runtime", "python310", "--entry-point",
+         "firestore_updater_cloud_function", "--trigger-bucket", "wordblend-ai-generated-pictures",
+         "--service-account", "update-firestore-function-sa@wordblend-ai.iam.gserviceaccount.com",
+         "--region=europe-west3", "--source=./firestore_updater_cloud_function"]
   env: ["PROJECT_ID=wordblend-ai"]
 
 
