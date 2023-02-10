@@ -34,7 +34,9 @@ def generate_picture(words: List["str"]) -> Tuple[Optional[str], str]:
     return response_text["data"][0]["url"], sentence
 
 
-def _create_metadata_for_storage_object(messages: List[Dict[str, str]]) -> Dict:
+def _create_metadata_for_storage_object(
+    messages: List[Dict[str, str]], generated_picture_url: str
+) -> Dict:
     emails = []
     doc_ids = []
     for message in messages:
@@ -42,7 +44,11 @@ def _create_metadata_for_storage_object(messages: List[Dict[str, str]]) -> Dict:
         doc_id = message.get("word_document_id")
         emails.append(email)
         doc_ids.append(doc_id)
-    return {"emails": emails, "doc_ids": doc_ids}
+    return {
+        "emails": emails,
+        "doc_ids": doc_ids,
+        "generated_picture_url": generated_picture_url,
+    }
 
 
 def main():
@@ -57,7 +63,9 @@ def main():
     generated_picture_url, description = generate_picture(words=words)
     print(f"users {unique_emails} generated {generated_picture_url}")
 
-    bucket_object_meta_data = _create_metadata_for_storage_object(messages=messages)
+    bucket_object_meta_data = _create_metadata_for_storage_object(
+        messages=messages, generated_picture_url=generated_picture_url
+    )
 
     ack_message_ids(msg_ids_to_ack=ack_ids)
     upload_image_to_bucket(

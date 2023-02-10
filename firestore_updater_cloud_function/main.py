@@ -14,6 +14,7 @@ def firestore_updater_cloud_function(data, context):
     emails = json.loads(metadata.get("emails").replace("'", '"'))
     doc_ids = json.loads(metadata.get("doc_ids").replace("'", '"'))
     description = metadata.get("description", "")
+    generated_picture_url = metadata.get("generated_picture_url", "")
     print(f"type of emails: {type(emails)}")
 
     print(f"{emails=}, {doc_ids=}, {description=}")
@@ -32,8 +33,9 @@ def firestore_updater_cloud_function(data, context):
         doc.update(
             {
                 "entire_description": description,
-                "generated_picture_url": blob.public_url,
+                "generated_picture_private_url": blob.public_url,
                 "co_authors": co_authors,
+                "generated_picture_url": generated_picture_url,
             }
         )
         doc_ref.set(doc)

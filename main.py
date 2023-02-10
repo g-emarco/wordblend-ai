@@ -118,6 +118,9 @@ def word():
 def add_word():
     # add what happens if no "idinfo"
     text = request.form["text"]
+    if not text:
+        return
+
     user_info = session["idinfo"]
 
     user_ref = db.collection("users").document(f'{user_info["email"]}')
