@@ -99,13 +99,8 @@ def logout():
 
 @app.route("/")
 def index():
-    return "Wordblend Login <a href='/login'><button>Login</button></a>"
-
-
-@app.route("/profile")
-@login_is_required
-def profile():
-    return render_template("user_info.html", idinfo=session["idinfo"])
+    # return "Wordblend Login <a href='/login'><button>Login</button></a>"
+    return render_template("login.html")
 
 
 @app.route("/word", methods=["GET"])
@@ -152,7 +147,48 @@ def get_words():
     for doc in docs:
         words.append(doc.to_dict()["word"])
 
-    return render_template("words.html", words=words)
+    return render_template("pictures.html", words=words)
+
+
+@app.route("/profile")
+def profile():
+    user_info = session["idinfo"]
+    email = user_info["email"]
+
+    # get stats
+    user_ref = db.collection("users").document(email)
+    word_num = len(user_ref.collection("words").get())
+    picture_url_num = len(
+        user_ref.collection("words").where("generated_picture_url", "!=", "").get()
+    )
+
+    words_ref = user_ref.collection("words").where("picture_url", "!=", "")
+    docs = words_ref.stream()
+    co_authors = set()
+    for doc in docs:
+        co_authors.update(doc.to_dict().get("co_authors", []))
+
+    num_co_authors = len(co_authors)
+    stats = {
+        "word_num": word_num,
+        "picture_url_num": picture_url_num,
+        "num_co_authors": num_co_authors,
+    }
+    return render_template("profile.html", stats=stats, idinfo=session["idinfo"])
+
+
+@app.route("/pictures")
+@login_is_required
+def get_pictures():
+    user_info = session["idinfo"]
+    email = user_info["email"]
+
+    user_ref = db.collection("users").document(email)
+    words_with_pictures = (
+        user_ref.collection("words").where("generated_picture_url", "!=", "").get()
+    )
+    word_doc = words_with_pictures[0].to_dict()
+    return render_template("pictures.html", word_doc=word_doc, idinfo=session["idinfo"])
 
 
 if __name__ == "__main__":

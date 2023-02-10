@@ -1,0 +1,36 @@
+<head>
+  <link rel="stylesheet" href="static/styles/profile.css">
+</head>
+
+<main class="container">
+  <div class="card">
+    <img src="{{ idinfo.picture }}" alt="User image" class="card__image" />
+    <div class="card__text">
+      <h2>{{ idinfo.name }}</h2>
+      <p>{{ idinfo.email }}</p>
+    </div>
+    <ul class="card__info">
+      <li>
+        <span class="card__info__stats">{{ stats.word_num }}</span>
+        <span>words</span>
+      </li>
+      <li>
+        <span class="card__info__stats">{{ stats.picture_url_num }}</span>
+        <span>Pictures</span>
+      </li>
+      <li>
+        <span class="card__info__stats">{{ stats.num_co_authors }}</span>
+        <span>Collaborators</span>
+      </li>
+    </ul>
+    <div class="card__action">
+      <a href='/pictures'> <button class="card__action__button card__action--follow">pictures</button></a>
+      <a href='/logout'><button class="card__action__button card__action--message">logout</button></a>
+    </div>
+  </div>
+
+    <form action="/add_word" method="post">
+            <input type="text" name="text">
+            <input type="submit" value="Submit">
+    </form>
+</main>

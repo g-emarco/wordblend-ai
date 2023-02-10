@@ -1,0 +1,23 @@
+<head>
+  <link rel="stylesheet" href="static/styles/pictures.css">
+</head>
+<div class="center">
+  <div class="property-card">
+    <a href="#">
+      <div class="property-image">
+        <img src="{{ word_doc.generated_picture_url }}">
+        <div class="property-image-title">
+          <!-- Optional <h5>Card Title</h5> If you want it, turn on the CSS also. -->
+        </div>
+      </div></a>
+    <div class="property-description">
+      <h5> {{ word_doc.entire_description }} </h5>
+      <p>Collaborators: .</p>
+    </div>
+    <a href="#">
+      <div class="property-social-icons">
+        <!-- I would usually put multipe divs inside here set to flex. Some people might use Ul li. Multiple Solutions -->
+      </div>
+    </a>
+  </div>
+</div>
