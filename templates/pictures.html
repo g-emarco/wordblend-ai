@@ -1,7 +1,12 @@
 <head>
   <link rel="stylesheet" href="static/styles/pictures.css">
+  <link rel="stylesheet" href="static/styles/text_box.css">
 </head>
+
+
 <div class="center">
+
+  {% for word_doc in word_docs %}
   <div class="property-card">
     <a href="#">
       <div class="property-image">
@@ -21,4 +26,9 @@
       </div>
     </a>
   </div>
+  {% endfor %}
 </div>
+
+
+
+

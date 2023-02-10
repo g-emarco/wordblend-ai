@@ -36,8 +36,8 @@ p
 
 .property-card
 {
-  height:18em;
-  width:14em;
+  height:40em;
+  width:35em;
   display:-webkit-box;
   display:-ms-flexbox;
   display:flex;

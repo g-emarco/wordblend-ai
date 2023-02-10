@@ -1,5 +1,7 @@
 <head>
   <link rel="stylesheet" href="static/styles/profile.css">
+  <link rel="stylesheet" href="static/styles/text_box.css">
+
 </head>
 
 <main class="container">
@@ -29,8 +31,15 @@
     </div>
   </div>
 
-    <form action="/add_word" method="post">
-            <input type="text" name="text">
-            <input type="submit" value="Submit">
-    </form>
+
+
 </main>
+
+<body>
+    <div>
+      <form action="/add_word" method="post" class="form-wrapper">
+      <input type="text" name= "text" id="describe" placeholder="Write a description for a picture" required>
+      <input type="submit" value="generate" id="submit">
+      </form>
+  </div>
+</body>

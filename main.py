@@ -190,8 +190,8 @@ def get_pictures():
     words_with_pictures = (
         user_ref.collection("words").where("generated_picture_url", "!=", "").get()
     )
-    word_doc = words_with_pictures[0].to_dict()
-    return render_template("pictures.html", word_doc=word_doc, idinfo=session["idinfo"])
+    word_docs = [word_doc.to_dict() for word_doc in words_with_pictures ]
+    return render_template("pictures.html", word_docs=word_docs, idinfo=session["idinfo"])
 
 
 if __name__ == "__main__":
