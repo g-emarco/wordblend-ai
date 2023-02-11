@@ -47,8 +47,14 @@ body {
   font-family: "Lato", sans-serif;
   font-weight: normal;
   background-repeat: no-repeat;
+  transform: scale(2);
+
 }
 
+.textboxid {
+    position:relative;
+    bottom: 40%;
+}
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, auto));
@@ -175,8 +181,8 @@ body {
   }
 
   .card:after {
-    top: 50px;
-    right: 160px;
+    top: 40px;
+    right: 190px;
   }
 
   .card__info li {

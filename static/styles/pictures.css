@@ -3,6 +3,7 @@ body
   background-color:#f2f2f2;
   font-family: 'RobotoDraft', 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
+   transform: scale(1.2);
 }
 
 *
@@ -126,7 +127,10 @@ p
   cursor:pointer;
 }
 
-
+.textboxid {
+    position:relative;
+    bottom: 30%;
+}
 /* Optional
 
 .property-image-title
