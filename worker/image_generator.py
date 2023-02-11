@@ -51,6 +51,17 @@ def _create_metadata_for_storage_object(
     }
 
 
+def _store_email_by_doc_id_in_redis(doc_ids: List[str], emails: List[str]) -> None:
+    print(f"store_email_by_doc_id_in_redis enter, {doc_ids=}, {emails=}")
+    import redis
+
+    redis_instance = redis.Redis(host=os.environ.get("REDIS_IP"), port=6379, db=0)
+    for i in range(len(doc_ids)):
+        redis_instance.set(doc_ids[i], emails[i])
+
+    print("Emails successfully stored for respective doc_ids in Redis")
+
+
 def main():
     number_of_words = random.randint(3, 5)
     print(f"generating a picture from {number_of_words=}")
@@ -65,6 +76,11 @@ def main():
 
     bucket_object_meta_data = _create_metadata_for_storage_object(
         messages=messages, generated_picture_url=generated_picture_url
+    )
+
+    _store_email_by_doc_id_in_redis(
+        bucket_object_meta_data.get("doc_ids"),
+        emails=bucket_object_meta_data.get("emails"),
     )
 
     ack_message_ids(msg_ids_to_ack=ack_ids)

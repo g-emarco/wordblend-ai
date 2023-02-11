@@ -1,6 +1,23 @@
+import os
+from typing import List
+
 from google.cloud import firestore
 from google.cloud import storage
 import json
+import redis
+
+redis_instance = redis.Redis(host=os.environ.get("REDIS_IP"), port=6379, db=0)
+
+
+def _retrieve_emails_by_doc_ids(doc_ids: List[str]) -> List[str]:
+    print(f"_retrieve_emails_by_doc_ids enter, {doc_ids=}")
+    emails = []
+    for doc_id in doc_ids:
+        email = redis_instance.get(doc_id)
+        emails.append(email.decode("utf-8"))
+        redis_instance.delete(doc_id)
+
+    return emails
 
 
 def firestore_updater_cloud_function(data, context):
@@ -11,17 +28,16 @@ def firestore_updater_cloud_function(data, context):
     blob = bucket.get_blob(data["name"])
     metadata = blob.metadata
 
-    emails = json.loads(metadata.get("emails").replace("'", '"'))
     doc_ids = json.loads(metadata.get("doc_ids").replace("'", '"'))
     description = metadata.get("description", "")
     generated_picture_url = metadata.get("generated_picture_url", "")
-    print(f"type of emails: {type(emails)}")
 
-    print(f"{emails=}, {doc_ids=}, {description=}")
+    emails = _retrieve_emails_by_doc_ids(doc_ids=doc_ids)
 
     assert len(emails) == len(
         doc_ids
     ), "emails and doc_ids lists must have the same length"
+    print(f"{emails=}, {doc_ids=}, {description=}")
 
     firestore_client = firestore.Client()
 
@@ -33,10 +49,9 @@ def firestore_updater_cloud_function(data, context):
         doc.update(
             {
                 "entire_description": description,
-                "generated_picture_private_url": blob.public_url,
+                "generated_picture_bucket_public_url": blob.public_url,
                 "co_authors": co_authors,
                 "generated_picture_url": generated_picture_url,
             }
         )
         doc_ref.set(doc)
-    print("finished updating firestore")

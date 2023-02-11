@@ -6,9 +6,12 @@ body {
 img {
   display: block;
   width: 80px;
-  margin: 30px auto;
+  margin: 200px auto;
   box-shadow: 0 5px 10px -7px #333333;
   border-radius: 50%;
+  position: relative;
+  left: 0;
+  bottom: -200;
 }
 
 .form {
@@ -43,17 +46,30 @@ button {
   box-shadow: 0 3px 10px -3px #719BE6;
   display: block;
   margin: 55px auto 10px auto;
+  position: relative;
+  left: -15%;
+  bottom: 120%;
 }
 
 a {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 4px;
   color: #719BE6;
   text-decoration: none;
-  padding: 5px;
+  padding: 0px;
   display: inline-block;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+.login-trigger {
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(to bottom right, #B05574, #F87E7B);
+  padding: 15px 30px;
+  border-radius: 30px;
+  position: relative;
+  top: 100%;
 }

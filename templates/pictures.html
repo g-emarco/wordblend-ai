@@ -10,7 +10,7 @@
   <div class="property-card">
     <a href="#">
       <div class="property-image">
-        <img src="{{ word_doc.generated_picture_url }}">
+        <img src="{{ word_doc.generated_picture_bucket_public_url }}">
         <div class="property-image-title">
           <!-- Optional <h5>Card Title</h5> If you want it, turn on the CSS also. -->
         </div>
@@ -27,8 +27,15 @@
     </a>
   </div>
   {% endfor %}
+
+
 </div>
 
-
-
-
+<body>
+    <div>
+      <form action="/add_word" method="post" class="form-wrapper">
+      <input type="text" name= "text" id="describe" placeholder="Write a description for a picture" required>
+      <input type="submit" value="generate" id="submit">
+      </form>
+  </div>
+</body>

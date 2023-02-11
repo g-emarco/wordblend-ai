@@ -15,6 +15,7 @@ black = "*"
 firebase-admin = "*"
 google-cloud-pubsub = "*"
 google-cloud-secret-manager = "*"
+redis = "*"
 
 [dev-packages]
 

@@ -8,6 +8,9 @@ metadata:
     run.googleapis.com/launch-stage: BETA
 spec:
   template:
+    metadata:
+      annotations:
+        run.googleapis.com/vpc-access-connector: projects/wordblend-ai/locations/europe-west3/connectors/serverless-vpc-connector1
     spec:
       taskCount: 1
       template:
@@ -27,6 +30,8 @@ spec:
               value: 'true'
             - name: GCP_PROJECT
               value: wordblend-ai
+            - name: REDIS_IP
+              value: '10.42.53.6'
             - name: IMAGE_GEN_API_KEY
               valueFrom:
                 secretKeyRef:

@@ -177,7 +177,16 @@ def profile():
         "picture_url_num": picture_url_num,
         "num_co_authors": num_co_authors,
     }
-    return render_template("profile.html", stats=stats, idinfo=session["idinfo"])
+
+    user_ref = db.collection("users").document(email)
+    words_with_pictures = (
+        user_ref.collection("words")
+        .where("generated_picture_bucket_public_url", "!=", "")
+        .get()
+    )
+    word_docs = [word_doc.to_dict() for word_doc in words_with_pictures]
+
+    return render_template("profile.html", stats=stats, idinfo=session["idinfo"], word_docs=word_docs)
 
 
 @app.route("/pictures")
@@ -188,10 +197,25 @@ def get_pictures():
 
     user_ref = db.collection("users").document(email)
     words_with_pictures = (
-        user_ref.collection("words").where("generated_picture_url", "!=", "").get()
+        user_ref.collection("words")
+        .where("generated_picture_bucket_public_url", "!=", "")
+        .get()
     )
-    word_docs = [word_doc.to_dict() for word_doc in words_with_pictures ]
-    return render_template("pictures.html", word_docs=word_docs, idinfo=session["idinfo"])
+    word_docs = [word_doc.to_dict() for word_doc in words_with_pictures]
+    return render_template(
+        "pictures.html", word_docs=word_docs, idinfo=session["idinfo"]
+    )
+
+
+@app.route("/redis_test")
+@login_is_required
+def redis_test():
+    import redis
+
+    redis_host = os.environ.get("REDIS_IP", "localhost")
+    redis_client = redis.StrictRedis(host=redis_host, port=6379)
+    value = redis_client.incr("counter", 1)
+    return f"Visitor number: {value}"
 
 
 if __name__ == "__main__":

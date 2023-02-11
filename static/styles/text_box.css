@@ -31,6 +31,8 @@ a {
 	overflow: hidden;
 	padding: 8px;
 	width: 450px;
+	position: relative;
+    left: 0%;
 }
 
 .form-wrapper #describe {
@@ -47,6 +49,9 @@ a {
 	height: 20px;
 	padding: 13px;
 	width: 320px;
+	position: relative;
+    top: 100%;
+
 }
 
 .form-wrapper #describe:focus {
