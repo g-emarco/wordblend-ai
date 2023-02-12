@@ -50,7 +50,7 @@ def firestore_updater_cloud_function(data, context):
             {
                 "entire_description": description,
                 "generated_picture_bucket_public_url": blob.public_url,
-                "co_authors": co_authors,
+                "co_authors": list(set(co_authors)),
                 "generated_picture_url": generated_picture_url,
             }
         )

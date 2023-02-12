@@ -165,7 +165,7 @@ def profile():
         user_ref.collection("words").where("generated_picture_url", "!=", "").get()
     )
 
-    words_ref = user_ref.collection("words").where("picture_url", "!=", "")
+    words_ref = user_ref.collection("words").where("generated_picture_url", "!=", "")
     docs = words_ref.stream()
     co_authors = set()
     for doc in docs:
