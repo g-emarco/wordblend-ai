@@ -37,6 +37,5 @@ steps:
   env: ["PROJECT_ID=wordblend-ai"]
   waitFor: ['-']
 
-
 images:
 - 'europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest'
