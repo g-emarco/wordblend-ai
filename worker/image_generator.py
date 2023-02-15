@@ -28,6 +28,7 @@ def generate_picture(words: List["str"]) -> Tuple[Optional[str], str]:
     resp = requests.post(QUERY_URL, headers=headers, json=data)
 
     if resp.status_code != 200:
+        print(f"error: {resp.json()}")
         raise ValueError("Failed to generate image")
 
     response_text = resp.json()
@@ -63,7 +64,7 @@ def _store_email_by_doc_id_in_redis(doc_ids: List[str], emails: List[str]) -> No
 
 
 def main():
-    number_of_words = random.randint(3, 5)
+    number_of_words = random.randint(2, 3)
     print(f"generating a picture from {number_of_words=}")
     messages, ack_ids = pull_messages(n=number_of_words)
     if not messages:
