@@ -35,7 +35,7 @@ spec:
             - name: IMAGE_GEN_API_KEY
               valueFrom:
                 secretKeyRef:
-                  key: '1'
+                  key: '2'
                   name: IMAGE_GEN_API_KEY
             resources:
               limits:

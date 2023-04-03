@@ -16,6 +16,8 @@ firebase-admin = "*"
 google-cloud-pubsub = "*"
 google-cloud-secret-manager = "*"
 redis = "*"
+pre-commit = "*"
+detect-secrets = "*"
 
 [dev-packages]
 
