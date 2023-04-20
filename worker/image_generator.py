@@ -7,6 +7,8 @@ from gcp_wrappers.storage import upload_image_to_bucket
 
 QUERY_URL = "https://api.openai.com/v1/images/generations"
 
+print("some print")
+
 
 def generate_picture(words: List["str"]) -> Tuple[Optional[str], str]:
     sentence = " ".join(words)
