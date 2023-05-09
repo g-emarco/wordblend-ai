@@ -7,6 +7,7 @@ steps:
     - |
       docker build . -t europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest \
       && docker push europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest \
+  secretEnv: ['AOSS_KEY']
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -36,6 +37,13 @@ steps:
          "--region=europe-west3", "--source=./firestore_updater_cloud_function"]
   env: ["PROJECT_ID=wordblend-ai"]
   waitFor: ['-']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/966921858684/secrets/AOSS_KEY/versions/latest
+    env: 'AOSS_KEY'
+options:
+  logging: CLOUD_LOGGING_ONLY
 
 images:
 - 'europe-west3-docker.pkg.dev/$PROJECT_ID/webapp/wordblend:latest'

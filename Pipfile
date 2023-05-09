@@ -3,6 +3,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "https://_json_key_base64:${AOSS_KEY}@us-python.pkg.dev/cloud-aoss/cloud-aoss-python/simple"
+verify_ssl = false
+name = "aoss"
+
 [packages]
 flask = "*"
 install = "*"
@@ -18,6 +23,9 @@ google-cloud-secret-manager = "*"
 redis = "*"
 pre-commit = "*"
 detect-secrets = "*"
+emoji = {version="*", index="aoss"}
+keyring = "*"
+"keyrings.google-artifactregistry-auth" = "*"
 
 [dev-packages]
 
