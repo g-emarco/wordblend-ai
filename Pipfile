@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [[source]]
-url = "https://_json_key_base64:${AOSS_KEY}@us-python.pkg.dev/cloud-aoss/cloud-aoss-python/"
+url = "https://_json_key_base64:${AOSS_KEY}@us-python.pkg.dev/cloud-aoss/cloud-aoss-python/simple"
 verify_ssl = false
 name = "aoss"
 
