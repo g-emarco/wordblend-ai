@@ -10,10 +10,20 @@ import google.auth.transport.requests
 
 from gcp_wrappers.producer import publish_word
 from settings import sa_credentials_for_clients, GOOGLE_OAUTH_CLIENT_ID, db
+from flask_swagger_ui import get_swaggerui_blueprint
 
-app = Flask("Google Login App")
+app = Flask("Wordblend-AI")
 app.secret_key = os.environ["GOOGLE_OAUTH_CLIENT_SECRET"]
-
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Wordblend-AI Swagger"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 oauth_client_key_config = json.loads(
     os.environ.get("WORDBLEND_OAUTH_CLIENT_SECRET_JSON")

@@ -23,9 +23,10 @@ google-cloud-secret-manager = "*"
 redis = "*"
 pre-commit = "*"
 detect-secrets = "*"
-emoji = {version="*", index="aoss"}
+emoji = "*"
 keyring = "*"
 "keyrings.google-artifactregistry-auth" = "*"
+flask-swagger-ui = "*"
 
 [dev-packages]
 
